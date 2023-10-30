@@ -17,7 +17,9 @@ class SharkController extends Controller
         $sharks = Shark::all();
 
         // load the view pass the sharks
-        return view('sharks.index', $sharks);
+        return view('sharks.index', [
+            'sharks' => $sharks
+        ]);
     }
 
     /**
@@ -25,7 +27,7 @@ class SharkController extends Controller
      */
     public function create()
     {
-        //
+        return view('sharks.create');
     }
 
     /**
@@ -33,7 +35,15 @@ class SharkController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email',
+            'shark_level' => 'required|numeric'
+        ]);
+
+        Shark::create($validated);
+
+        return redirect('sharks')->with('success', 'Data has been saved');
     }
 
     /**
@@ -41,7 +51,9 @@ class SharkController extends Controller
      */
     public function show(Shark $shark)
     {
-        //
+        return view('sharks.show', [
+            'shark' => $shark
+        ]);
     }
 
     /**
